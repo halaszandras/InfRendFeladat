@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Client</title>
+</h:head>
+
+<h:body>
+    <ui:composition template="templates/common.xhtml">
+        <ui:define name="content">
+
+            <p:panel header="Add Client" style="margin-bottom:20px">
+                <h:panelGrid cellpadding="10">
+                    <h:form>
+                        <p:panelGrid columns="2" style="width: 50%" cellpadding="5" >
+                            <h:outputText value="Name:"/>
+                            <p:inputText value="#{clientView.newClient.name}"/>
+
+                            <h:outputText value="Mobile-phone number:"/>
+                            <p:inputMask value="#{clientView.newClient.mobile}" mask="999-999-999"/>
+
+                            <h:outputText value="Personal ID Card number:"/>
+                            <p:inputMask value="#{clientView.newClient.idCard}" mask="999999aa"/>
+
+                            <h:outputText value="Home address:"/>
+                            <p:inputText value="#{clientView.newClient.address}"/>
+
+                            <h:outputText/>
+                            <p:commandButton value="Add" action="#{clientView.addClient}"/>
+                        </p:panelGrid>
+                    </h:form>
+                </h:panelGrid>
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

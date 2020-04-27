@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+<ui:composition template="templates/common.xhtml">
+<ui:define name="content">
+
+
+                <p:panel header="Clients data" style="margin-bottom:20px">
+                        <h:panelGrid cellpadding="10">
+                                <h:form>
+                                        <p:panelGrid columns="2" style="width: 50%">
+
+                                                <h:outputText value="Name:"/>
+                                                <h:outputText value="#{clientView.selectedClient.name}" rendered="#{not clientView.edit}"/>
+                                                <p:inputText value="#{clientView.editedClient.name}" rendered="#{clientView.edit}"/>
+
+                                                <h:outputText value="Mobile:"/>
+                                                <h:outputText value="#{clientView.selectedClient.mobile}" rendered="#{not clientView.edit}"/>
+                                                <p:inputMask value="#{clientView.editedClient.mobile}" rendered="#{clientView.edit}" mask="999-999-999"/>
+
+                                                <h:outputText value="Address:"/>
+                                                <h:outputText value="#{clientView.selectedClient.address}" rendered="#{not clientView.edit}"/>
+                                                <p:inputText value="#{clientView.editedClient.address}" rendered="#{clientView.edit}"/>
+
+                                                <h:outputText value="ID Card:"/>
+                                                <h:outputText value="#{clientView.selectedClient.idCard}" rendered="#{not clientView.edit}"/>
+                                                <p:inputMask value="#{clientView.editedClient.idCard}" rendered="#{clientView.edit}" mask="999999aa"/>
+
+                                                <h:outputText value="Active:"/>
+                                                <h:outputText value="#{clientView.selectedClient.active? 'Active' : 'Inactive'}" rendered="#{not clientView.edit}"/>
+                                                <p:selectOneButton value="#{clientView.editedClient.active}" rendered="#{clientView.edit}">
+                                                        <f:selectItem itemLabel="Active" itemValue="true"/>
+                                                        <f:selectItem itemLabel="Inactive" itemValue="false"/>
+                                                </p:selectOneButton>
+                                        </p:panelGrid>
+                                        <p:commandButton value="Edit" action="#{clientView.changeEdit}" rendered="#{!clientView.edit}"/>
+                                        <p:commandButton value="Save" action="#{clientView.saveClient}" rendered="#{clientView.edit}"/>
+                                        <p:commandButton value="Back" action="clients.xhtml" />
+                                </h:form>
+                        </h:panelGrid>
+                </p:panel>
+
+        <p:panel header="Movies available" style="margin-bottom:20px">
+                <h:panelGrid cellpadding="10">
+                        <h:form>
+                                <p:dataTable var="moviesentity" value="#{moviesView.movies}" style="width: 100%" rows="10"  paginator="true"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+                                        <p:column filterBy="#{moviesentity.title}" headerText="Title">
+                                                <h:outputText value="#{moviesentity.title}" />
+                                        </p:column>
+                                        <p:column filterBy="#{moviesentity.date}" headerText="Date">
+                                                <h:outputText value="#{moviesentity.date}" >
+                                                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                                                </h:outputText>
+                                        </p:column>
+                                        <p:column filterBy="#{moviesentity.number}" headerText="Number">
+                                                <h:outputText value="#{moviesentity.number}" />
+                                        </p:column>
+                                        <p:column filterBy="#{moviesentity.state}" headerText="State"><!--Only rentables may be shown-->
+                                                <h:outputText value="#{moviesentity.state}" />
+                                        </p:column>
+                                        <p:column filterBy="#{moviesentity.type}" headerText="Type">
+                                                <h:outputText value="#{moviesentity.type}" />
+                                        </p:column>
+                                        <p:column headerText="Renting">
+                                                <p:commandButton value="Rent" action="#{clientView.saveRenting(moviesentity)}" rendered="#{moviesentity.state != 'Rented'}"/>
+                                        </p:column>
+                                </p:dataTable>
+                        </h:form>
+                </h:panelGrid>
+        </p:panel>
+
+
+        <p:panel header="Rented movies" style="margin-bottom:20px">
+                <h:panelGrid cellpadding="10">
+                        <h:form>
+                                <p:dataTable var="renting" value="#{clientView.selectedClientRentings}" style="width: 100%" rows="10"  paginator="true"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             rowsPerPageTemplate="5,10,15">
+                                        <p:column headerText="Title">
+                                                <h:outputText value="#{renting.movieTitle}"/>
+                                        </p:column>
+                                        <p:column headerText="Date">
+                                                <h:outputText value="#{renting.movieDate}"/>
+                                        </p:column>
+                                        <p:column headerText="Number">
+                                                <h:outputText value="#{renting.movieNumber}"/>
+                                        </p:column>
+                                        <p:column headerText="State">
+                                                <h:outputText value="#{renting.movieState}"/>
+                                        </p:column>
+                                        <p:column headerText="Type">
+                                                <h:outputText value="#{renting.movieType}"/>
+                                        </p:column>
+                                        <p:column headerText="Start of rent">
+                                                <h:outputText value="#{renting.rentStart}">
+                                                        <f:convertDateTime pattern="yyyy.MM.dd" />
+                                                </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="End of rent">
+                                                <h:outputText value="#{renting.rentEnd}" style="#{clientView.getDaysFromEnd(renting.rentEnd) > 1 ? 'color:red;' : 'color:blue;'}">
+                                                        <f:convertDateTime pattern="yyyy.MM.dd" />
+                                                </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Lateness">
+                                                <h:outputText value="#{clientView.getDaysFromEnd(renting.rentEnd) > 1 ? 'Late' : 'In time'}"
+                                                              style="#{clientView.getDaysFromEnd(renting.rentEnd) > 1 ? 'color:red;' : 'color:blue;'}"/>
+                                        </p:column>
+                                        <p:column headerText="Delete">
+                                                <p:commandButton value="Retrieve" action="#{clientView.deleteRenting(renting)}"/>
+                                        </p:column>
+                                </p:dataTable>
+                        </h:form>
+                </h:panelGrid>
+        </p:panel>
+
+</ui:define>
+</ui:composition>
+</h:body>
+</html>

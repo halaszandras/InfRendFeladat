@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Movies</title>
+</h:head>
+
+<h:body>
+    <ui:composition template="templates/common.xhtml">
+        <ui:define name="content">
+                <h:form>
+                <p:dataTable id="movies" var="moviesentity" value="#{moviesView.movies}" style="width: 100%" rows="15" widgetVar="moviesEntityTable"  paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"
+                             rowKey="#{moviesentity.id}" selection="#{moviesView.selectedMovie}" selectionMode="single"
+                >
+
+                    <p:column filterBy="#{moviesentity.title}" headerText="Title">
+                        <h:outputText value="#{moviesentity.title}" rendered="#{moviesentity.id != moviesView.editedMovie.id}"/>
+                        <p:inputText value="#{moviesView.editedMovie.title}" size="13" rendered="#{moviesentity.id == moviesView.editedMovie.id}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{moviesentity.date}" headerText="Date">
+                        <h:outputText value="#{moviesentity.date}" rendered="#{moviesentity.id != moviesView.editedMovie.id}">
+                            <f:convertDateTime pattern="yyyy.MM.dd" />
+                        </h:outputText>
+                        <p:inputMask value="#{moviesView.editedMovie.date}" size="13" rendered="#{moviesentity.id == moviesView.editedMovie.id}" mask="9999.99.99">
+                            <f:convertDateTime pattern="yyyy.MM.dd"/>
+                        </p:inputMask>
+                    </p:column>
+
+                    <p:column filterBy="#{moviesentity.number}" headerText="Number">
+                        <h:outputText value="#{moviesentity.number}" rendered="#{moviesentity.id != moviesView.editedMovie.id}"/>
+                        <p:inputText value="#{moviesView.editedMovie.number}" size="13" rendered="#{moviesentity.id == moviesView.editedMovie.id}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{moviesentity.state}" headerText="State" filterMatchMode="equals">
+                        <f:facet name="stateFilter">
+                            <p:selectOneButton onchange="PF('moviesEntityTable').filter()" styleClass="custom-filter" size="13">
+                                <f:selectItem itemLabel="All" itemValue="" />
+                                <f:selectItem itemLabel="Available" itemValue="Available" />
+                                <f:selectItem itemLabel="Wasted" itemValue="Wasted" />
+                            </p:selectOneButton>
+                        </f:facet>
+                        <h:outputText value="#{moviesentity.state}" rendered="#{moviesentity.id != moviesView.editedMovie.id}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{moviesentity.type}" headerText="Type" filterMatchMode="exact">
+                        <f:facet name="typeFilter">
+                            <p:selectOneMenu onchange="PF('moviesEntityTable').filter()" styleClass="custom-filter" size="13">
+                                <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItem itemLabel="DVD" itemValue="DVD" />
+                                <f:selectItem itemLabel="VHS" itemValue="VHS" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{moviesentity.type}" rendered="#{moviesentity.id != moviesView.editedMovie.id}"/>
+                    </p:column>
+                </p:dataTable>
+
+                    <p:contextMenu for="movies">
+                        <p:menuitem value="Edit" update="movies" icon="pi pi-pencil" rendered="#{moviesentity.state != 'Rented' and !moviesView.moviesIsEdited}" action="#{moviesView.selectMovieToEdit(moviesentity)}"/>
+                        <p:menuitem value="Save" update="movies" icon="pi pi-save" rendered="#{moviesentity.state != 'Rented' and moviesView.moviesIsEdited and moviesentity.id == moviesView.editedMovie.id}" action="#{moviesView.saveEditedMovie}"/>
+                        <p:menuitem value="Delete" update="movies" icon="pi pi-times" action="#{moviesView.deleteSelectedMovie()}"/>
+                    </p:contextMenu>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+   <title>Facelet Title</title>
+</h:head>
+<h:body>
+   <ui:composition template="templates/common.xhtml">
+      <ui:define name="content">
+         <div>
+
+            <p:tabView dynamic="true" cache="true" effect="fold">
+
+               <p:tab title="Általános leírás">
+                  <h:panelGrid columns="2" cellpadding="10">
+                     <p:graphicImage name="book_symbol.png" />
+                     <h:outputText
+                             value="Egy elképzelt videó kölcsönző nyilvántartását végző szoftver előállítása a cél.
+                             A tékában videó kazettákat és DVD-ket lehet kölcsönözni regisztrált felhasználóknak.
+                             Az alkalmazást a téka vezetője használja, hogy regisztrálja, és ellenőrizze az ügyfelek kölcsönzéseit.
+                             Az alkalmazásnak nem célja a kölcsönzési és késedelmi díjak kimutatása." />
+                  </h:panelGrid>
+               </p:tab>
+
+               <p:tab title="Felhasználási esetek">
+                  <h:panelGrid columns="2" cellpadding="10">
+                     <p:graphicImage name="resources/usage.png" />
+                     <h:outputText value="Ügyfelek nyilvántartása A rendszer nyilvántartja a téka kölcsönzőit (ügyfelek).
+                     Új ügyfelek felvételénél a rendszer bekéri a nevet, telefonszámot, személyigazolvány számot, lakcímet.
+                     A regisztrálás után a rendszer egyedi azonosítóval látja el az ügyfeleket.
+                     A felvett ügyfelek listájában lehet keresni név, személyigazolvány szám, azonosító alapján.
+                     Az ügyfelek adatait lehet módosítani, vagy az ügyfelet törölni.
+                     A törlés csak státuszváltással jár, nem fizikai törléssel." />
+                  </h:panelGrid>
+               </p:tab>
+            </p:tabView>
+
+            <p:accordionPanel multiple="true">
+               <p:tab title="DVD-k, kazetták nyilvántartása">
+                  <h:panelGrid columns="2" cellpadding="10">
+                     <p:graphicImage name="resources/database.png" />
+                     <h:outputText
+                             value="A rendszer nyilvántartja a kazetták és DVD- adatait: cím, beszerzés dátuma, sorszám, státusz (szabad, kikölcsönzött, selejtezett)." />
+                  </h:panelGrid>
+               </p:tab>
+               <p:tab title="Kölcsönzés">
+                  <h:panelGrid columns="2" cellpadding="10">
+                     <p:graphicImage name="resources/borrow.png" />
+                     <h:outputText value="Amikor egy ügyfél kölcsönözni szeretne szükség van az azonosító adataira,
+                        illetve egy vagy több kazetta/DVD azonosítójára (feltételezve, hogy a polcon megtalálta azokat).
+                     A rendszerben először a felhasználót kell kikeresni.
+                     Az adatlapon meg lehet nézni, hogy van-e már kikölcsönözve neki valami.
+                     Utána egyenként lehet hozzárendelni a kikeresett kazettát/DVD-t." />
+                  </h:panelGrid>
+               </p:tab>
+               <p:tab title="DVD visszahozatala">
+                  <h:panelGrid columns="2" cellpadding="10">
+                     <p:graphicImage name="resources/borrow.png" />
+                     <h:outputText value="Amikor valaki visszahoz kazettát/DVD-t, akkor azt azonosító alapján lehet felszabadítani.
+                     Az ügyintéző a sorszám alapján rákeres a kazettára, és az adatlapján visszaállíthatja szabad státuszúra, így megszűnik a kölcsönzés.
+                     Az adatlapnak tartalmaznia kell, hogy mikor kölcsönözték ki a kazettát, és ki volt az, amennyiben kikölcsönzött állapotban van." />
+                  </h:panelGrid>
+               </p:tab>
+               <p:tab title="Késések lekérdezése">
+                  <h:panelGrid columns="2" cellpadding="10">
+                     <p:graphicImage name="resources/late.png" />
+                     <h:outputText value="A rendszer lehetőséget ad egy bizonyos idő után (pl 1 nap – konfiguráció) még mindig kikölcsönzött kazetták/DVD-k lekérdezésére.
+                     A listában szerepelnie kell a kazetta és a kölcsönző adatainak is, illetve a kikölcsönzés dátumának, és a számított késésnek is." />
+                  </h:panelGrid>
+               </p:tab>
+            </p:accordionPanel>
+
+         </div>
+      </ui:define>
+   </ui:composition>
+</h:body>
+</html>

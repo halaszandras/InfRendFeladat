@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Clients</title>
+</h:head>
+
+<h:body>
+    <ui:composition template="templates/common.xhtml">
+        <ui:define name="content">
+
+            <h:form>
+                <p:dataTable var="clientsentity" value="#{clientView.clients}" widgetVar="clientsTable" style="width: 100%" rows="10"  paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15">
+
+                    <p:column filterBy="#{clientsentity.name}" headerText="Name">
+                        <h:outputText value="#{clientsentity.name}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{clientsentity.mobile}" headerText="Mobile">
+                        <h:outputText value="#{clientsentity.mobile}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{clientsentity.idCard}" headerText="ID Card">
+                        <h:outputText value="#{clientsentity.idCard}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{clientsentity.address}" headerText="Address">
+                        <h:outputText value="#{clientsentity.address}"/>
+                    </p:column>
+
+                    <p:column headerText="Active">
+                        <f:facet name="filter">
+                            <p:selectOneMenu  onchange="PF('clientsTable').filter()" styleClass="custom-filter">
+                                <f:converter converterId="javax.faces.Boolean" />
+                                <f:selectItem itemLabel="Active" itemValue="true"/>
+                                <f:selectItem itemLabel="Inactive" itemValue="false" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{clientsentity.active? 'Active' : 'Inactive'}"/>
+                    </p:column>
+
+                    <p:column headerText="Data Sheet">
+                        <p:commandButton value="DataSheet" action="#{clientView.dataClient(clientsentity)}"/>
+                    </p:column>
+
+                    <p:column headerText="Delete">
+                        <p:commandButton value="Delete" action="#{clientView.deleteClient(clientsentity)}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>
